@@ -1,0 +1,69 @@
+Database:
+  User: 
+  Password: 
+  Host: 
+
+Log:
+  Level: ALL #["ALL", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+  Colorise: True
+
+version: 1
+disable_existing_loggers: False
+formatters:
+  default:
+    "()": uvicorn.logging.DefaultFormatter
+    datefmt: "%d-%b-%y %H:%M:%S"
+    format: '[%(asctime)s] %(levelprefix)-9s %(message)s'
+  access:
+    "()": uvicorn.logging.AccessFormatter
+    datefmt: "%d-%b-%y %H:%M:%S"
+    format: '[%(asctime)s] (%(levelprefix)-9s): %(client_addr)s - "%(request_line)s" %(status_code)s'
+  default_file_no_color:
+    "()": uvicorn.logging.DefaultFormatter
+    datefmt: "%d-%b-%y %H:%M:%S"
+    format: '{Uvicorn} [%(asctime)s] %(levelprefix)-9s %(message)s'
+    use_colors: False
+  access_file_no_color:
+    "()": uvicorn.logging.AccessFormatter
+    datefmt: "%d-%b-%y %H:%M:%S"
+    format: '{Uvicorn} [%(asctime)s] (%(levelprefix)-9s): %(client_addr)s - "%(request_line)s" %(status_code)s'
+    use_colors: False
+handlers:
+  default:
+    class: logging.StreamHandler
+    formatter: default
+    stream: ext://sys.stderr
+  access:
+    class: logging.StreamHandler
+    formatter: access
+    stream: ext://sys.stdout
+  file:
+    class : logging.handlers.RotatingFileHandler
+    formatter: default_file_no_color
+    filename: main.log
+    maxBytes: 1024
+    backupCount: 0
+  file_access:
+    class : logging.handlers.RotatingFileHandler
+    formatter: access_file_no_color
+    filename: main.log
+    maxBytes: 1024
+    backupCount: 0
+loggers:
+  uvicorn:
+    level: DEBUG
+    handlers:
+      - default
+      - file
+  uvicorn.error:
+    level: DEBUG
+    handlers:
+      - default
+      - file
+    propagate: no
+  uvicorn.access:
+    level: DEBUG
+    handlers:
+      - access
+      - file_access
+    propagate: no
