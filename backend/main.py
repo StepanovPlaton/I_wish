@@ -1,19 +1,23 @@
-from imp import reload
+#!/usr/bin/python
+
 from fastapi import FastAPI
 from pydantic import BaseModel
-import uvicorn
+import uvicorn #type: ignore
 
-from utils.Logger import LoggerClass
-from utils.ConfigReader import ConfigClass
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).parents[0]))
+
 from utils.YAMLReader import YAMLReaderClass
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port=5000, log_level="debug", log_config="config.yaml", reload=True)
-    quit()
+from utils.ConfigReader import ConfigClass
+from utils.Logger import LoggerClass
+from utils.DatabaseFriend import DatabaseFriendClass
 
 YAMLReader = YAMLReaderClass()
 Config = ConfigClass(YAMLReader)
 Logger = LoggerClass(Config)
+DatabaseFriend: DatabaseFriendClass | None = None
 
 class User(BaseModel):
     Login: str
@@ -23,7 +27,10 @@ app = FastAPI()
 
 @app.on_event("startup") #type: ignore
 async def startup():
-    print("Server startup")
+    global DatabaseFriend
+
+    Logger.Log("Server startup - OK", 2)
+    DatabaseFriend = DatabaseFriendClass(Config, Logger)
 
 @app.get("/")
 async def root():

@@ -1,11 +1,14 @@
 Database:
-  User: 
-  Password: 
-  Host: 
+  host: 192.168.32.64
+  port: 5433
+  user: pi
+  password: raspberry
+  database: I_want
 
 Log:
-  Level: ALL #["ALL", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
-  Colorise: True
+  FileName: &LogFileName main.log
+  Level: DEBUG #["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+  Colorise: True # True | False
 
 version: 1
 disable_existing_loggers: False
@@ -17,16 +20,16 @@ formatters:
   access:
     "()": uvicorn.logging.AccessFormatter
     datefmt: "%d-%b-%y %H:%M:%S"
-    format: '[%(asctime)s] (%(levelprefix)-9s): %(client_addr)s - "%(request_line)s" %(status_code)s'
+    format: '[%(asctime)s] %(levelprefix)-9s %(client_addr)s - "%(request_line)s" %(status_code)s'
   default_file_no_color:
     "()": uvicorn.logging.DefaultFormatter
     datefmt: "%d-%b-%y %H:%M:%S"
-    format: '{Uvicorn} [%(asctime)s] %(levelprefix)-9s %(message)s'
+    format: '{Uvicorn} [%(asctime)-18s] (%(levelname)-8s): %(message)s'
     use_colors: False
   access_file_no_color:
     "()": uvicorn.logging.AccessFormatter
     datefmt: "%d-%b-%y %H:%M:%S"
-    format: '{Uvicorn} [%(asctime)s] (%(levelprefix)-9s): %(client_addr)s - "%(request_line)s" %(status_code)s'
+    format: '{Uvicorn} [%(asctime)-18s] (%(levelname)-8s): %(client_addr)s - "%(request_line)s" %(status_code)s'
     use_colors: False
 handlers:
   default:
@@ -40,15 +43,11 @@ handlers:
   file:
     class : logging.handlers.RotatingFileHandler
     formatter: default_file_no_color
-    filename: main.log
-    maxBytes: 1024
-    backupCount: 0
+    filename: *LogFileName
   file_access:
     class : logging.handlers.RotatingFileHandler
     formatter: access_file_no_color
-    filename: main.log
-    maxBytes: 1024
-    backupCount: 0
+    filename: *LogFileName
 loggers:
   uvicorn:
     level: DEBUG
