@@ -26,6 +26,7 @@ class LoggerClass():
 
     def __init__(self, Config: ConfigClass):
         self.__Config = Config.Config
+        #                          1        2        3         4         5
         self.__Levels = ["ALL", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
         self.__NeedIndent = False
@@ -53,7 +54,7 @@ class LoggerClass():
 
         logging.basicConfig(level = self.__LevelForLogging(self.__CurrentLevel), 
                             filename = "./"+self._LogFileName, 
-                            filemode = "a", 
+                            filemode = "w", 
                             format = '{App}     [%(asctime)-18s] (%(levelname)-8s): %(message)s', 
                             datefmt = '%d-%b-%y %H:%M:%S')
         self.__LoggingConfigured = True

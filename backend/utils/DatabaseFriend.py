@@ -1,20 +1,28 @@
-import psycopg2
+from shutil import ExecError
+from tokenize import PseudoExtras
+import asyncpg
 
 from utils.Logger import LoggerClass
 from utils.ConfigReader import ConfigClass, ConfigError
+from utils.Models import *
+from utils.PasswordHasher import PasswordHasherClass
 
-class DatabaseFriendError(Exception): pass
-class DatabaseConnectionDataNotFound(DatabaseFriendError, ConfigError): pass
+class DatabaseConnectorError(Exception): pass
+class DatabaseConnectionDataNotFound(DatabaseConnectorError, ConfigError): pass
+class DatabaseConnectionFailed(DatabaseConnectorError): pass
+class DatabaseTransactionFailed(DatabaseConnectorError): pass
 
-class DatabaseFriendClass:
-    def __init__(self, Config: ConfigClass, Logger: LoggerClass):
+class DatabaseConnectorClass:
+    def __init__(self, Config: ConfigClass, Logger: LoggerClass, \
+                    PasswordHasher: PasswordHasherClass):
         self.Config = Config.Config
         self.Logger = Logger
+        self.PasswordHasher = PasswordHasher
 
-        self.Connection: psycopg2.connection | None = None
-        self.DatabaseCursor: psycopg2.cursor | None = None
+        self.Connection: asyncpg.Connection[asyncpg.Record] | None = None
+        self.ConnectionChecked: bool = False
 
-        self.Logger.Log("Initialization (DatabaseFriend) module...", 1)
+        self.Logger.Log("Initialization (DatabaseConnector) module...", 1)
         self.Logger.Log("Try read database authorization data from config.yaml", 1)
         try:
             self.AuthorizationData: dict[str, str] = self.Config["Database"]
@@ -26,16 +34,69 @@ class DatabaseFriendClass:
         except:
             self.Logger.Log("Can't read data for connection to database from config.yaml", 5)
             raise DatabaseConnectionDataNotFound()
-        else:
-            self.Logger.Log("Read database authorization data - OK", 1)
-            self.Logger.Log(f"Try connection to database ({self.AuthorizationData['host']}:"\
-                                f"{self.AuthorizationData['port']}/{self.AuthorizationData['database']})")
-            try:
-                self.Connection = psycopg2.connect(**self.AuthorizationData) #type: ignore
-                self.DatabaseCursor = self.Connection.cursor() #type: ignore
-            except BaseException as e:
-                self.Logger.Log("Failed to connection to database!", 5)
-                self.Logger.Log(str(e), 5)
-                raise
-            else: self.Logger.Log("Connection to database - success")
-        self.Logger.Log("(DatabaseFriend) module ready to work", 1)
+
+    async def CheckDatabaseConnection(self) -> bool:
+        self.Logger.Log("Read database authorization data - OK", 1)
+        self.Logger.Log(f"Try connection to database ({self.AuthorizationData['host']}:"\
+                f"{self.AuthorizationData['port']}/{self.AuthorizationData['database']})")
+        try:
+            self.Connection = await asyncpg.connect(**self.AuthorizationData)
+        except BaseException as e:
+            self.Logger.Log("Failed to connection to database!", 5)
+            self.Logger.Log(f"asyncpg return exception - {e}", 5)
+            raise DatabaseConnectionFailed()
+        else: 
+            self.ServerVersion = self.Connection.get_server_version()
+            self.ServerPID = self.Connection.get_server_pid()
+            await self.Connection.close()
+            self.Logger.Log("Connection to database - success. "\
+                f"Server version - {self.ServerVersion}, pid - {self.ServerPID}")
+            self.ConnectionChecked = True
+        self.Logger.Log("(DatabaseConnector) module ready to work", 1)
+        return True
+
+    async def Request(self, Request: str): 
+        if(not self.ConnectionChecked):
+            self.Logger.Log("Connection to database not checked. Needed check "\
+                "connection before execute request", 3)
+            if(not await self.CheckDatabaseConnection()):
+                raise DatabaseConnectionFailed()
+        DatabaseConnection = await asyncpg.connect(**self.AuthorizationData,)
+        try:
+            self.Logger.Log(f"Send SQL request - {Request}", 1)
+            return await DatabaseConnection.fetch(Request)
+        except Exception as e:
+            self.Logger.Log(f"SQL request crashed with error - {e}", 4)
+            await DatabaseConnection.close()
+            raise DatabaseTransactionFailed()
+
+class DatabaseFriendCheckAuthorizationDataError(Exception): pass
+
+class DatabaseFriendClass(DatabaseConnectorClass):
+    GetUserByLogin = "SELECT * FROM public.\"Users\" WHERE \"Login\" = '{Login}'"
+
+    async def CheckUserAuthorizationData(self, Login: str, Password: str) -> bool:
+        try:
+            PSQLResult: list[UserInDatabaseModel] = \
+                await self.Request(self.GetUserByLogin.format(Login=Login)) #type: ignore
+        except DatabaseConnectorError:
+            self.Logger.Log("Can't check user authorization data - failed database request", 4)
+            raise DatabaseFriendCheckAuthorizationDataError()
+        if(PSQLResult): 
+            if(len(PSQLResult) == 1): 
+                User = PSQLResult[0]
+                return self.PasswordHasher.CheckPassword(User["HashOfPassword"], Password)
+            else:
+                self.Logger.Log("Found 2 users with the same logins", 5)
+        return False
+
+    async def CheckLoginIsFree(self, Login: str) -> bool:
+        try:
+            PSQLResult: list[asyncpg.Record] = \
+                await self.Request(self.GetUserByLogin.format(Login=Login)) #type: ignore
+        except DatabaseConnectorError:
+            self.Logger.Log("Can't check if login is free - failed database request", 4)
+            raise DatabaseFriendCheckAuthorizationDataError()
+        if(PSQLResult): 
+            if(len(PSQLResult) == 0): return True
+        return False
