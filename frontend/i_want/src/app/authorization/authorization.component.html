@@ -1,3 +1,15 @@
-<p>
-  authorization works!
-</p>
+<div class="auth_box">
+  <h2>Авторизация</h2>
+  <div class="auth_box__input">
+    <input class="center" (keyup)="loginChanged($event)" />
+    <br>
+    <input class="center" (keyup)="passwordChanged($event)" />
+    <br>
+    <button class="center" (click)="login($event)">Войти</button>
+    <br>
+    <a routerLink="/rgstr" class="center">Регистрация</a>
+  </div>
+  <p *ngIf="failedAuth">
+    Ошибка авторизации
+  </p>
+</div>

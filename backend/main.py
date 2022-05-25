@@ -110,6 +110,38 @@ async def Registration(Login: str, Password: str):
     Logger.Log(f"Unusual turn of events during registration", 3)
     raise HTTPException(status_code=500)
 
+@app.post("/check_token")
+async def CheckToken(Login: str, Body: TokenRequestBodyModel):
+    Logger.Log(f"User {Login} trying check token", 1)
+    if(DatabaseFriend):
+        try:
+            TokenCorrect = DatabaseFriend.CheckToken(Login, Body.Token)
+        except DatabaseFriendCheckTokenError:
+            Logger.Log(f"Check token of user {Login} failed. Database error", 4)
+            raise HTTPException(
+                status_code=500, 
+                detail="Can't check token. Database access error."
+            )
+        except DatabaseFriendUserNotFoundError:
+            Logger.Log(f"Check token of user {Login} failed. User not found", 4)
+            raise HTTPException(
+                status_code=404, 
+                detail="Can't check token. User not found."
+            )
+        else:
+            if(TokenCorrect):
+                Logger.Log(f"Token of user {Login} correct", 2)
+                return {
+                    "TokenCorrect": True
+                }
+            else:
+                Logger.Log(f"Token of user {Login} incorrect", 3)
+                return {
+                    "TokenCorrect": False
+                }
+    Logger.Log(f"Unusual turn of events during check the token", 3)
+    raise HTTPException(status_code=500)
+
 @app.get("/{Login}/wishes", response_model=list[WishesWithoutTargetDatabaseModel])
 async def GetWishes(Login: str): 
     Logger.Log(f"Trying to get wishes for user {Login}", 1)

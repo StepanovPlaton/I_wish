@@ -5,16 +5,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { AuthGuard } from 'src/shared/guards/auth.guard';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';  
 import { AuthorizationComponent } from './authorization/authorization.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 @NgModule({
-  declarations: [	
+  declarations: [		
     AppComponent,
-      AuthorizationComponent
+    AuthorizationComponent,
+    RegistrationComponent,
    ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
+    HttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable
@@ -22,7 +29,7 @@ import { AuthorizationComponent } from './authorization/authorization.component'
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

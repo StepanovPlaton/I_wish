@@ -1,0 +1,15 @@
+<div class="auth_box">
+  <h2>Регистрация</h2>
+  <div class="auth_box__input">
+    <input class="center" (keyup)="loginChanged($event)" />
+    <br>
+    <input class="center" (keyup)="passwordChanged($event)" />
+    <br>
+    <button class="center" (click)="registration($event)">Зарегестрироваться</button>
+    <br>
+    <a routerLink="/auth" class="center">Авторизация</a>
+  </div>
+  <p *ngIf="failedRegistration">
+    Ошибка регистрации
+  </p>
+</div>
