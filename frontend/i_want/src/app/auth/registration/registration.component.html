@@ -1,0 +1,47 @@
+<section class="auth_wrapper">
+  <div class="auth_form">
+    <h2 
+      class="auth_form__header"
+      [ngClass]="{
+        'auth_form__header__red': registrationFailed
+      }"
+    >
+      {{ 'Registration' | translate }}
+    </h2>
+    <ion-list class="inputs_list">
+      <ion-item class="input_item login">
+        <ion-input #loginInput
+          class="input"
+          type="text"
+          autofocus="true"
+          [placeholder]="'Login' | translate"
+        >
+        </ion-input>
+      </ion-item>
+      <ion-item class="input_item password">
+        <app-password-input-with-eye>
+          <ion-input #passwordInput
+            class="input"
+            type="password"
+            autofocus="true"
+            [placeholder]="'Password' | translate"
+          >
+          </ion-input>
+        </app-password-input-with-eye>
+      </ion-item>
+      <div class="controls">
+        <div class="to_login">
+          <a [routerLink]="['../']">{{ 'I already have an account' | translate }}</a>
+        </div>
+        <div class="submit_wrapper">
+          <ion-button 
+            (click)="registration()"
+            [color]="registrationFailed ? 'danger' : 'primary'"
+          >
+            {{ 'Registration' | translate }}
+          </ion-button>
+        </div>
+      </div>
+    </ion-list>
+  </div>
+</section>

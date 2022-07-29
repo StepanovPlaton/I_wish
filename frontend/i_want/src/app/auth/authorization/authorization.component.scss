@@ -1,0 +1,52 @@
+.auth_wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+
+    .auth_form {
+        width: 325px;
+        height: 260px;
+        border: 1px solid var(--ion-color-primary);
+        border-radius: 12px;
+        padding: 16px;
+        position: relative;
+        top: 20%;
+
+        &__header {
+            color: white;
+            text-align: center;
+
+            &__red {
+                color: #eb445a;
+            }
+        }
+
+        .inputs_list {
+            .input_item {
+                .input {
+                    color: white;
+                }
+            }
+        }
+
+        .controls {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+
+            .to_login {
+                padding: 12px;
+                width: 150px;
+                a {
+                    text-decoration: none;
+                }
+            }
+        }
+        
+    }
+}

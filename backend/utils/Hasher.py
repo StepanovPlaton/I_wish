@@ -16,4 +16,4 @@ class HasherClass:
         return self.TokenGenerator.hash(Login + HashOfPassword) #type: ignore
 
     def CheckToken(self, Token: str, Login: str, HashOfPassword: str) -> bool:
-        return self.TokenGenerator.verify(Token, Login + HashOfPassword) #type: ignore
+        return self.TokenGenerator.verify(Login + HashOfPassword, Token) #type: ignore

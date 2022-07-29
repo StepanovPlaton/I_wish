@@ -1,3 +1,22 @@
-<div class="main">
-    <router-outlet></router-outlet>
-</div>
+<section class="root">
+  <ion-header class="header">
+    <img 
+      [src]="LOGO" 
+      class="header__logo"
+      (click)="toRoot()"
+    />
+    <ion-avatar 
+      *ngIf="userInfo && showAvatar"
+      class="header__avatar"
+      (click)="openProfile()"
+    >
+      <img [src]="userInfo.Avatar ?? AVATAR"/>
+    </ion-avatar>
+  </ion-header>
+  <div class="content_wrapper">
+    <ion-content class="content">
+      <router-outlet></router-outlet>
+    </ion-content>
+  </div>
+  <ion-footer></ion-footer>
+</section>

@@ -1,0 +1,56 @@
+<section class="main_wrapper">
+  <ion-list *ngIf="wishes; else noWishes">
+    <ion-list-header>
+      <div class="list-header">
+        {{ 
+          login ? 
+          ('User\'s wish list' | translate: {name: login}) : 
+          'Common wish list' | translate 
+        }}
+        <span class="open_common_link">
+          <a
+            *ngIf="login"
+            [routerLink]="['main']"
+          >
+            {{ 'Open common wish list' | translate }}
+          </a>
+        </span>
+      </div>
+    </ion-list-header>
+    <ion-item
+      class="wish_item"
+      *ngFor="let wish of wishes"
+      (click)="openWish(wish)"
+    >
+      <ion-avatar class="avatar">
+        <div class="img_wrapper">
+          <img 
+            [src]="wish.Image ?? NOT_FOUND" 
+            class="image"
+            [ngClass]="{
+              'invert': !wish.Image
+            }"
+          />
+        </div>
+      </ion-avatar>
+      <div class="description">
+        <ion-label class="owner">
+          {{ wish.Login }}
+        </ion-label>
+        <ion-title class="title">
+          {{ wish.Wish }}
+        </ion-title>
+      </div>
+    </ion-item>
+  </ion-list>
+  <ng-template #noWishes>
+    <p class="no-wishes">{{ 'Users have not added any wishes yet' | translate }}</p>
+  </ng-template>
+</section>
+
+<div 
+  class="add_wish_button_wrapper"
+  (click)="addWish()"
+>
+  <img [src]="PLUS"/>
+</div>

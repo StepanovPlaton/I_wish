@@ -1,0 +1,12 @@
+export const LOGO = "./assets/icons/logo.svg"
+export const SETTINGS = "./assets/icons/settings.svg";
+export const NOT_FOUND = "./assets/icons/not_found.svg";
+export const ADD_IMAGE = "./assets/icons/add_image.svg"
+export const EDIT = "./assets/icons/edit.svg"
+export const EXTERNAL_LINK = "./assets/icons/external-link.svg";
+export const CHECK = "./assets/icons/check.svg";
+export const CLOSE = "./assets/icons/close.svg";
+export const AVATAR = "./assets/icons/avatar.svg";
+export const LOGOUT = "./assets/icons/logout.svg";
+export const PLUS = "./assets/icons/plus.svg";
+export const DELETE = "./assets/icons/delete.svg"

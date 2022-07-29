@@ -1,6 +1,46 @@
-.main {
-    height: 100%;
+.root {
     width: 100%;
-    max-width: 400px;
-    margin: auto;
+    height: 100%;
+
+    ::ng-deep {
+        --header-height: 54px;
+    }
+
+
+    .header {
+        height: var(--header-height);
+        background: var(--background-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &__logo {
+            height: 100%;
+            padding: 12px;
+            padding-left: 24px;
+            filter: invert(1);
+        }
+
+        &__avatar {
+            height: calc(var(--header-height) - 12px);
+            width: calc(var(--header-height) - 12px);
+            margin-right: 18px;
+        }
+    }
+
+    .content_wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+        height: calc(100% - var(--header-height));
+        background-color: var(--around-background-color);
+        .content {
+            width: 100%;
+            max-width: 800px;
+            height: 100%;
+            border: 2px solid rgb(35, 35, 35);
+        }
+    }
+    
 }

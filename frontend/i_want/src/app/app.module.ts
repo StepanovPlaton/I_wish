@@ -3,33 +3,36 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
-import { AuthGuard } from 'src/shared/guards/auth.guard';
-import { HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';  
-import { AuthorizationComponent } from './authorization/authorization.component';
-import { RegistrationComponent } from './registration/registration.component';
+import { IonicModule } from '@ionic/angular';
+import { CookieModule } from 'ngx-cookie';
+
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { PagesModule } from './pages/pages.module';
 
 @NgModule({
-  declarations: [		
+  declarations: [	
     AppComponent,
-    AuthorizationComponent,
-    RegistrationComponent,
    ],
   imports: [
     BrowserModule,
-    CommonModule,
     AppRoutingModule,
+    IonicModule.forRoot(),
+    CookieModule.withOptions(),
     HttpClientModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    })
+    TranslateModule.forRoot({
+        loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+        }
+    }),
   ],
-  providers: [AuthGuard],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
+}

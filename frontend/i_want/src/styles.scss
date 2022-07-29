@@ -1,14 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 html {
-    background: black;
-    color: white;
-    height: 100%;
-    width: 100%;
+    --background-color: rgb(40, 40, 40);
+    --around-background-color: rgb(38, 38, 38);
+    --ion-background-color: var(--background-color);
+    --ion-color-secondary: #3dc2ff;
+    --ion-color-primary: #3880ff;
+    --ion-text-color: white;
+}
 
-    body {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        position: absolute;
-    }
+.alert {
+    --background: var(--background-color);
+    --border-radius: 5px;
 }
