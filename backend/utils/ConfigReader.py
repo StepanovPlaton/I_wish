@@ -6,7 +6,7 @@ class ConfigError(Exception): pass
 class ConfigNotFound(ConfigError, FileNotFoundError): pass
 
 class ConfigClass():
-    def __init__(self, YAMLReader: YAMLReaderClass, PathToConfig: str ="..\\config.yaml", quiet: bool =False) -> None: 
+    def __init__(self, YAMLReader: YAMLReaderClass, PathToConfig: str ="../config.yaml", quiet: bool =False) -> None: 
         try:
             self.Config = YAMLReader.ReadYamlFile(PathToConfig)
         except Exception:

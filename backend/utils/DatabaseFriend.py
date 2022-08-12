@@ -103,7 +103,7 @@ class DatabaseFriendClass(DatabaseConnectorClass):
     # INSERT INTO public."Users"("Login", "HashOfPassword") 
     #                               VALUES ('{Login}', '{HashOfPassword}');
     AddUserRequest = 'INSERT INTO public."Users"("Login", "HashOfPassword")'\
-	                    'VALUES (:Login, :HashOfPassword);'
+                    'VALUES (:Login, :HashOfPassword);'
 
     # UPDATE public."Users"
 	# SET "Avatar"=:Avatar, "AboutMe"=:AboutMe, "Telegram"=:Telegram
@@ -162,9 +162,9 @@ class DatabaseFriendClass(DatabaseConnectorClass):
 
     # DELETE FROM public."Wishes" WHERE "ID" = {ID};
     DeleteWishRequest = 'DELETE FROM public."Wishes" WHERE "ID" = :ID;'
-    
+
     # ----- Users -----
-    
+
     async def CheckUserAuthorizationData(self, Login: str, Password: str) -> bool:
         try:
             PSQLResult: list[UserInDatabaseModel] = \

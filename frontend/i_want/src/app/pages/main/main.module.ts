@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PasswordInputWithEyeModule } from '../../base/password-input-with-eye/password-input-with-eye.module';
 import { MainRoutingModule } from './main-routing.component';
 import { MainComponent } from './main.component';
+import { WishListModule } from 'src/app/base/wish-list/wish-list.module';
 
 @NgModule({
   imports: [
@@ -13,10 +14,9 @@ import { MainComponent } from './main.component';
     IonicModule,
     TranslateModule,
     PasswordInputWithEyeModule,
+    WishListModule,
   ],
-  declarations: [
-    MainComponent
-  ],
-  exports: []
+  declarations: [MainComponent],
+  exports: [],
 })
-export class MainModule { }
+export class MainModule {}

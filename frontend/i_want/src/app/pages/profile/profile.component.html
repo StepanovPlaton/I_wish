@@ -1,31 +1,28 @@
 <section class="profile_wrapper">
   <ion-content>
     <div class="image_block">
-      <div 
+      <div
         class="image_wrapper"
         [ngClass]="{
-          'dashed_border': !user.Avatar && thisIsMe
+          dashed_border: !user.Avatar && thisIsMe
         }"
       >
-        <input 
+        <input
           #fileUpload
           class="hidden"
-          type="file" 
+          type="file"
           accept=".jpg, .png, .jpeg"
           (change)="onProfileAvatarChange($event)"
-        >
-        <img 
-          *ngIf="user.Avatar || !thisIsMe; else addImage" 
+        />
+        <img
+          *ngIf="user.Avatar || !thisIsMe; else addImage"
           [src]="user.Avatar ?? AVATAR"
           (click)="thisIsMe && fileUpload.click()"
         />
         <ng-template #addImage>
-          <div 
-            class="add_image" 
-            (click)="thisIsMe && fileUpload.click()"
-          >
-            <img [src]="ADD_IMAGE"/>
-            {{ 'Add an image' | translate }}
+          <div class="add_image" (click)="thisIsMe && fileUpload.click()">
+            <img [src]="ADD_IMAGE" />
+            {{ "Add an image" | translate }}
           </div>
         </ng-template>
       </div>
@@ -33,7 +30,7 @@
     <ion-header class="wish_name">
       <span class="input_wrapper">
         <span class="input">
-          <ion-input 
+          <ion-input
             [value]="user.Login"
             [color]="error ? 'danger' : 'success'"
             readonly
@@ -43,25 +40,9 @@
     </ion-header>
 
     <ion-list class="description_list">
-      <ion-item 
-        class="description_item"
-      >
-        <span class="description_item__name">ID:</span>
-        <ion-input
-          class="description_item__content"
-          [value]="'# '+user.ID"
-          color="success"
-          readonly
-        >
-        </ion-input>
-      </ion-item>
-
-      <ion-item 
-        *ngIf="user.AboutMe || thisIsMe"
-        class="description_item"
-      >
+      <ion-item *ngIf="user.AboutMe || thisIsMe" class="description_item">
         <span class="description_item__name">
-          {{ 'About me' | translate }}:
+          {{ "About me" | translate }}:
         </span>
         <ion-textarea
           class="description_item__content description"
@@ -74,19 +55,10 @@
         </ion-textarea>
       </ion-item>
 
-      <ion-item 
-        *ngIf="user.Telegram || thisIsMe"
-        class="description_item"
-      >
-        <span class="description_item__name">
-          {{ 'Telegram' }}:
-        </span>
-        <span
-          class="description_item__content link"
-          color="success"
-          readonly
-        >
-          <ion-input 
+      <ion-item *ngIf="user.Telegram || thisIsMe" class="description_item">
+        <span class="description_item__name"> {{ "Telegram" }}: </span>
+        <span class="description_item__content link" color="success" readonly>
+          <ion-input
             class="link"
             [value]="user.Telegram"
             [placeholder]="'Telegram'"
@@ -94,21 +66,17 @@
             (ionChange)="onTelegramAccountChange($event)"
           >
           </ion-input>
-          <img 
+          <img
             (click)="openTelegramAccount(user.Telegram)"
             [src]="EXTERNAL_LINK"
-          /> 
+          />
         </span>
       </ion-item>
-      <ion-item 
-        class="description_item center"
-      >
-        <a
-          color="success"
-          [routerLink]="['/main/'+user.Login]"
-        >
-          {{ 'Open this user\'s wishes' | translate }}
-        </a>
+      <ion-item class="description_item center">
+        <!-- <a color="success" [routerLink]="['/main/' + user.Login]"> -->
+        <!--   {{ "Open this user's wishes" | translate }} -->
+        <!-- </a> -->
+        <app-wish-list class="wish_list"></app-wish-list>
       </ion-item>
       <ion-item class="free_item"></ion-item>
     </ion-list>
@@ -116,13 +84,9 @@
 </section>
 
 <div class="save_button_wrapper">
-  <img [src]="CLOSE" (click)="close()"/>
-  <img [src]="CHECK" (click)="submit()" *ngIf="thisIsMe"/>
+  <img [src]="CLOSE" (click)="close()" />
+  <img [src]="CHECK" (click)="submit()" *ngIf="thisIsMe" />
 </div>
-<ion-button 
-  class="logout_button_wrapper" 
-  color="danger"
-  *ngIf="thisIsMe"
->
-  <img [src]="LOGOUT" (click)="logout()"/>
+<ion-button class="logout_button_wrapper" color="danger" *ngIf="thisIsMe">
+  <img [src]="LOGOUT" (click)="logout()" />
 </ion-button>

@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PasswordInputWithEyeModule } from '../../base/password-input-with-eye/password-input-with-eye.module';
 import { ProfileComponent } from './profile.component';
 import { ProfileRoutingModule } from './profile-routing.component';
+import { WishListModule } from 'src/app/base/wish-list/wish-list.module';
 
 @NgModule({
   imports: [
@@ -13,10 +14,9 @@ import { ProfileRoutingModule } from './profile-routing.component';
     ProfileRoutingModule,
     TranslateModule,
     PasswordInputWithEyeModule,
+    WishListModule,
   ],
-  declarations: [
-    ProfileComponent
-  ],
-  exports: []
+  declarations: [ProfileComponent],
+  exports: [],
 })
-export class ProfileModule { }
+export class ProfileModule {}

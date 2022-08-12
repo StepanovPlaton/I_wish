@@ -1,31 +1,28 @@
-<section class="wish_wrapper">
+<section class="wish_wrapper" #swipeWrapper>
   <ion-content>
     <div class="image_block">
-      <div 
+      <div
         class="image_wrapper"
         [ngClass]="{
-          'dashed_border': !wish.Image
+          dashed_border: !wish.Image
         }"
       >
-        <input 
+        <input
           #fileUpload
           class="hidden"
-          type="file" 
+          type="file"
           accept=".jpg, .png, .jpeg"
           (change)="onWishImageChange($event)"
-        >
-        <img 
-          *ngIf="wish.Image; else addImage" 
+        />
+        <img
+          *ngIf="wish.Image; else addImage"
           [src]="wish.Image"
           (click)="owner && fileUpload.click()"
         />
         <ng-template #addImage>
-          <div 
-            class="add_image" 
-            (click)="owner && fileUpload.click()"
-          >
-            <img [src]="ADD_IMAGE"/>
-            {{ 'Add an image' | translate }}
+          <div class="add_image" (click)="owner && fileUpload.click()">
+            <img [src]="ADD_IMAGE" />
+            {{ "Add an image" | translate }}
           </div>
         </ng-template>
       </div>
@@ -38,62 +35,36 @@
       <ng-template #nameEdit>
         <span class="edit">
           <span class="edit_input_wrapper">
-            <ion-input 
+            <ion-input
               class="edit_input"
               [value]="wish.Wish"
               [placeholder]="'Enter your wish' | translate"
-              [color]="error ? 'danger' : 'success'"
+              [ngStyle]="{ color: error ? 'red' : '' }"
               (ionChange)="onWishNameChange($event)"
             ></ion-input>
           </span>
-          <img [src]="EDIT" class="edit_icon"/>
+          <img [src]="EDIT" class="edit_icon" />
         </span>
       </ng-template>
     </ion-header>
 
     <ion-list class="description_list">
-      <ion-item 
-        class="description_item"
-      >
-        <span class="description_item__name">ID:</span>
-        <ion-input
-          class="description_item__content"
-          [value]="wish.ID === -1 ? '' : '# '+wish.ID"
-          [placeholder]="'Not yet known' | translate"
-          color="success"
-          readonly
-        >
-        </ion-input>
-      </ion-item>
-
-      <ion-item 
-        *ngIf="wish.Login && wish.Owner"
-        class="description_item"
-      >
-        <span class="description_item__name">
-          {{ 'Owner' | translate }}:
-        </span>
-        <span
-          class="description_item__content"
-          (click)="openOwner()"
-        >
+      <ion-item *ngIf="wish.Login && wish.Owner" class="description_item">
+        <span class="description_item__name"> {{ "Owner" | translate }}: </span>
+        <span class="description_item__content" (click)="openOwner()">
           <ion-avatar class="avatar">
-            <img [src]="ownerInfo?.Avatar ?? AVATAR"/>
+            <img [src]="ownerInfo?.Avatar ?? AVATAR" />
           </ion-avatar>
-          {{ wish.Login }} (#{{wish.Owner}})
+          {{ wish.Login }} (#{{ wish.Owner }})
         </span>
       </ion-item>
 
-      <ion-item 
-        *ngIf="wish.Description || owner"
-        class="description_item"
-      >
+      <ion-item *ngIf="wish.Description || owner" class="description_item">
         <span class="description_item__name">
-          {{ 'Description' | translate }}:
+          {{ "Description" | translate }}:
         </span>
         <ion-textarea
           class="description_item__content description"
-          color="success"
           [readonly]="!owner"
           [placeholder]="'Description' | translate"
           [value]="wish.Description"
@@ -102,16 +73,13 @@
         </ion-textarea>
       </ion-item>
 
-      <ion-item 
+      <ion-item
         *ngIf="(wish.Price && wish.Price !== -1) || owner"
         class="description_item"
       >
-        <span class="description_item__name">
-          {{ 'Price' | translate }}:
-        </span>
+        <span class="description_item__name"> {{ "Price" | translate }}: </span>
         <ion-input
           class="description_item__content"
-          color="success"
           type="number"
           [value]="wish.Price === -1 ? '' : wish.Price"
           [placeholder]="'Unknown' | translate"
@@ -121,19 +89,10 @@
         </ion-input>
       </ion-item>
 
-      <ion-item 
-        *ngIf="wish.Link || owner"
-        class="description_item"
-      >
-        <span class="description_item__name">
-          {{ 'Link' | translate }}:
-        </span>
-        <span
-          class="description_item__content link"
-          color="success"
-          readonly
-        >
-          <ion-input 
+      <ion-item *ngIf="wish.Link || owner" class="description_item">
+        <span class="description_item__name"> {{ "Link" | translate }}: </span>
+        <span class="description_item__content link" color="success" readonly>
+          <ion-input
             class="link"
             [value]="wish.Link"
             [placeholder]="'Link' | translate"
@@ -141,10 +100,7 @@
             (ionChange)="onWishLinkChange($event)"
           >
           </ion-input>
-          <img 
-            (click)="openLink(wish.Link)"
-            [src]="EXTERNAL_LINK"
-          /> 
+          <img (click)="openLink(wish.Link)" [src]="EXTERNAL_LINK" />
         </span>
       </ion-item>
       <ion-item class="free_item"></ion-item>
@@ -153,13 +109,13 @@
 </section>
 
 <div class="save_button_wrapper">
-  <img [src]="CLOSE" (click)="close()"/>
-  <img [src]="CHECK" (click)="submit()" *ngIf="owner"/>
+  <img [src]="CLOSE" (click)="close()" />
+  <img [src]="CHECK" (click)="submit()" *ngIf="owner" />
 </div>
-<ion-button 
-  class="delete_button_wrapper" 
+<ion-button
+  class="delete_button_wrapper"
   color="danger"
   *ngIf="owner && wish.ID !== -1"
 >
-  <img [src]="DELETE" (click)="deleteWish()"/>
+  <img [src]="DELETE" (click)="deleteWish()" />
 </ion-button>
