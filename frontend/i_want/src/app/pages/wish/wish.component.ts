@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GestureController } from '@ionic/angular';
+import { GestureController, IonModal } from '@ionic/angular';
 import { combineLatest, of, switchMap } from 'rxjs';
 import { WishListService } from 'src/app/base/wish-list/wish-list.service';
 import {
@@ -63,6 +63,7 @@ export class WishComponent implements AfterViewInit {
   }
 
   @ViewChild('swipeWrapper') swipeWrapper: ElementRef | undefined;
+  @ViewChild('viewImageModal') viewImageModal: IonModal | undefined;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -113,6 +114,8 @@ export class WishComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (this.viewImageModal)
+      this.viewImageModal.cssClass = ['modal', 'view-image-modal'];
     if (this.swipeWrapper) {
       let gesture = this.gestureCtrl.create({
         gestureName: 'my-gesture',
@@ -146,6 +149,10 @@ export class WishComponent implements AfterViewInit {
       });
       gesture.enable();
     }
+  }
+
+  closeViewImageModal() {
+    if (this.viewImageModal) this.viewImageModal.dismiss();
   }
 
   openOwner() {

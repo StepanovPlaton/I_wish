@@ -15,10 +15,17 @@
           (change)="onWishImageChange($event)"
         />
         <img
+          #wishImage
           *ngIf="wish.Image; else addImage"
           [src]="wish.Image"
           (click)="owner && fileUpload.click()"
+          [id]="owner ? '' : 'open-image'"
         />
+        <ion-modal trigger="open-image" #viewImageModal>
+          <ng-template>
+            <img [src]="wish.Image" (click)="closeViewImageModal()" />
+          </ng-template>
+        </ion-modal>
         <ng-template #addImage>
           <div class="add_image" (click)="owner && fileUpload.click()">
             <img [src]="ADD_IMAGE" />
