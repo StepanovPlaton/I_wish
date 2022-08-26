@@ -1,9 +1,9 @@
-Database:
-  host: 192.168.32.64
-  port: 5433
-  user: pi
-  password: raspberry
-  database: I_want
+#Database: # Example. You can set this params in .env file too
+#  host: 123.123.123.123
+#  port: 1111
+#  user: some_database_user
+#  password: some_password
+#  database: SomeDatabaseName
 
 Log:
   FileName: &LogFileName main.log

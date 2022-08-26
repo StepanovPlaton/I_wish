@@ -69,7 +69,11 @@ export class AuthService {
             ...userRegistrationData,
             ...response,
           };
-          this.cookieService.putObject('authData', this.userAuthorizationData);
+          let cookieExpiresDate = new Date();
+          cookieExpiresDate.setDate(cookieExpiresDate.getDate() + 90);
+          this.cookieService.putObject('authData', this.userAuthorizationData, {
+            expires: cookieExpiresDate,
+          });
           this.authorized = true;
           return of(true);
         } else {
@@ -89,7 +93,12 @@ export class AuthService {
             ...userAuthorizationData,
             ...response,
           };
-          this.cookieService.putObject('authData', this.userAuthorizationData);
+          let cookieExpiresDate = new Date();
+          cookieExpiresDate.setDate(cookieExpiresDate.getDate() + 90);
+          console.log(cookieExpiresDate);
+          this.cookieService.putObject('authData', this.userAuthorizationData, {
+            expires: cookieExpiresDate,
+          });
           this.authorized = true;
           return of(true);
         } else {
@@ -106,4 +115,3 @@ export class AuthService {
     this.router.navigate(['']);
   }
 }
-

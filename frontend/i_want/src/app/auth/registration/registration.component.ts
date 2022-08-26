@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class RegistrationComponent implements OnInit {
   @ViewChild('loginInput') loginInput: IonInput | undefined;
   @ViewChild('passwordInput') passwordInput: IonInput | undefined;
+  @ViewChild('invitationInput') invitationInput: IonInput | undefined;
 
   registrationFailed: boolean = false;
 
@@ -26,7 +27,8 @@ export class RegistrationComponent implements OnInit {
     if (this.registrationFailed) return;
     if (
       (this.loginInput?.value?.toString().length ?? 0) < 3 ||
-      (this.passwordInput?.value?.toString().length ?? 0) < 3
+      (this.passwordInput?.value?.toString().length ?? 0) < 3 ||
+      this.invitationInput?.value?.toString() !== '!nvati0nTo!Wish'
     ) {
       this.registrationFailed = true;
       this.setNormalColorsTimeout();

@@ -1,4 +1,5 @@
 backend/__pycache__
 backend/utils/__pycache__
 backend/main.log
+backend/.env
 .vscode
