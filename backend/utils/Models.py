@@ -30,6 +30,8 @@ class WishesRequestBodyModel(BaseModel):
     Description: str | None
     Price: int | None
     Link: str | None
+    Anonymous: bool | None
+    HidingDate: str | None
 
 class UserRequestBodyModel(BaseModel):
     Token: str
@@ -72,3 +74,5 @@ class WishesDatabaseModel(TypedDict):
     Owner: int
     Login: str
     Avatar: str | None
+    Anonymous: bool
+    HidingDate: str | None

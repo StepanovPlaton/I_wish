@@ -123,16 +123,28 @@
 
 .save_button_wrapper {
   height: 50px;
-  width: 150px;
+  width: 50px;
   position: absolute;
-  right: 12px;
+  right: 16px;
   bottom: 24px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   img {
     height: 100%;
-    width: 50%;
+  }
+}
+.close_button_wrapper {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: 24px;
+  left: 12px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  img {
+    height: 100%;
   }
 }
 

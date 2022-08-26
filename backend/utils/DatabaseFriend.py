@@ -94,7 +94,7 @@ class DatabaseFriendClass(DatabaseConnectorClass):
     # --- Users ---
 
     # SELECT * FROM public."Users" WHERE "Login" = '{Login}'
-    GetUserByLoginRequest = 'SELECT * FROM public."Users" WHERE "Login" = :Login'
+    GetUserByLoginRequest = 'SELECT * FROM public."Users" WHERE "Login"=:Login'
 
     # SELECT "ID", "Login", "Avatar" FROM public."Users" WHERE "Login" = '{Login}'
     GetUserWithoutPasswordByLoginRequest = 'SELECT "ID", "Login", "Avatar", "AboutMe", '\
@@ -119,18 +119,18 @@ class DatabaseFriendClass(DatabaseConnectorClass):
     # JOIN public."Users" ON public."Wishes"."Owner" = public."Users"."ID"
     # WHERE "Owner" = '1';
     GetWishesRequest = 'SELECT public."Wishes"."ID", "Wish", public."Wishes"."Image", '\
-                        '"Description", "Price", "Link", "Owner", "Login", public."Users"'\
-                        '."Avatar" FROM public."Wishes" JOIN public."Users" ON public.'\
-                        '"Wishes"."Owner" = public."Users"."ID" WHERE "Login" = :Login;'
+                        '"Description", "Price", "Link", "Anonymous", "HidingDate", "Owner", "Login", '\
+                        'public."Users"."Avatar" FROM public."Wishes" JOIN public."Users"'\
+                        ' ON public."Wishes"."Owner" = public."Users"."ID" WHERE "Login" = :Login;'
 
     # SELECT public."Wishes"."ID", "Wish", public."Wishes"."Image", "Description", "Price", 
     # "Link", "Owner", "Login", public."Users"."Avatar"
     # FROM public."Wishes"
     # JOIN public."Users" ON public."Wishes"."Owner" = public."Users"."ID";
     GetAllWishesRequest = 'SELECT public."Wishes"."ID", "Wish", public."Wishes"."Image", '\
-                    '"Description", "Price", "Link", "Owner", "Login", public."Users".'\
-                    '"Avatar" FROM public."Wishes" JOIN public."Users" ON public."Wishes".'\
-                    '"Owner" = public."Users"."ID";'
+                    '"Description", "Price", "Link", "Anonymous", "HidingDate", "Owner", '\
+                    '"Login", public."Users"."Avatar" FROM public."Wishes" JOIN public.'\
+                    '"Users" ON public."Wishes"."Owner" = public."Users"."ID";'
 
     # SELECT public."Wishes"."ID", "Wish", public."Wishes"."Image", "Description", "Price", 
     # "Link", "Owner", "Login", public."Users"."Avatar"
@@ -138,19 +138,19 @@ class DatabaseFriendClass(DatabaseConnectorClass):
     # JOIN public."Users" ON public."Wishes"."Owner" = public."Users"."ID"
     # WHERE public."Wishes"."ID" = 1;
     GetWishByIDRequest = 'SELECT public."Wishes"."ID", "Wish", public."Wishes"."Image",'\
-                        ' "Description", "Price", "Link", "Owner", "Login", public."Users"'\
-                        '."Avatar" FROM public."Wishes" JOIN public."Users" ON public.'\
-                        '"Wishes"."Owner" = public."Users"."ID" WHERE public."Wishes".'\
-                        '"ID" = :WishID';
+                        ' "Description", "Price", "Link", "Anonymous", "HidingDate", '\
+                        '"Owner", "Login", public."Users"."Avatar" FROM public."Wishes" '\
+                        'JOIN public."Users" ON public."Wishes"."Owner" = public."Users".'\
+                        '"ID" WHERE public."Wishes"."ID" = :WishID';
 
     # INSERT INTO public."Wishes"("Wish", "Owner", "Image", "Description", "Price", "Link")
     # VALUES ('{Wish}', (SELECT "ID" FROM public."Users" WHERE "Login" = '{Login}'), 
     # '{Image}', '{Description}', '{Price}', '{Link}')
     # RETURNING "ID";
     CreateWishRequest = 'INSERT INTO public."Wishes"("Wish", "Owner", "Image", "Description",'\
-                        ' "Price", "Link") VALUES (:Wish, (SELECT "ID" FROM public."Users"'\
+                        ' "Price", "Link", "Anonymous", "HidingDate") VALUES (:Wish, (SELECT "ID" FROM public."Users"'\
                         ' WHERE "Login" = :Login), :Image, :Description, '\
-                        ':Price, :Link) RETURNING "ID";'
+                        ':Price, :Link, :Anonymous, :HidingDate) RETURNING "ID";'
 
     # UPDATE public."Wishes"
 	# SET "Wish"={Wish},  "Image"={Image}, "Description"={Description}, 
@@ -158,7 +158,7 @@ class DatabaseFriendClass(DatabaseConnectorClass):
 	# WHERE "ID"={ID};
     UpdateWishRequest = 'UPDATE public."Wishes" SET "Wish"=:Wish, '\
                         '"Image"=:Image, "Description"=:Description, "Price"=:Price, '\
-                        '"Link"=:Link WHERE "ID"=:ID;'
+                        '"Link"=:Link, "Anonymous"=:Anonymous, "HidingDate"=:HidingDate WHERE "ID"=:ID;'
 
     # DELETE FROM public."Wishes" WHERE "ID" = {ID};
     DeleteWishRequest = 'DELETE FROM public."Wishes" WHERE "ID" = :ID;'

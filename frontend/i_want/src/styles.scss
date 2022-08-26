@@ -24,3 +24,12 @@ html {
     object-fit: contain;
   }
 }
+.modal.set-hiding-date-modal {
+  --width: 350px;
+  --height: 385px;
+  ion-datetime {
+    --background: var(--background-color);
+    color: var(--text-color);
+    --ion-color-step-300: var(--background-color);
+  }
+}

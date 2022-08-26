@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-<circle style="fill:#FF6643;" cx="256" cy="256" r="256"/>
-<path style="fill:#FF4F19;" d="M256,0v512c141.385,0,256-114.615,256-256S397.385,0,256,0z"/>
-<polygon style="fill:#F2F2F4;" points="365.904,184.885 327.115,146.096 256,217.211 184.885,146.096 146.096,184.885 217.211,256 
-	146.096,327.115 184.885,365.904 256,294.789 327.115,365.904 365.904,327.115 294.789,256 "/>
-<polygon style="fill:#DFDFE1;" points="365.904,184.885 327.115,146.096 256,217.211 256,294.789 327.115,365.904 365.904,327.115 
-	294.789,256 "/>
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 487.622 487.622" style="enable-background:new 0 0 487.622 487.622;" xml:space="preserve">
+<g>
+	<g>
+		<circle style="fill:#CF6F55;" cx="243.811" cy="243.811" r="243.811"/>
+		<path style="fill:#C06046;" d="M473.438,325.906l-77.24-82.096l-89.987-34.76l-68.096-78.382L91.424,243.81l214.352,235.854
+			C383.796,459.221,446.552,401.096,473.438,325.906z"/>
+		<polygon style="fill:#FFFFFF;" points="91.424,243.81 238.116,130.668 238.116,182.748 396.198,243.81 238.116,304.872 
+			238.116,356.952 		"/>
+	</g>
+</g>
 <g>
 </g>
 <g>

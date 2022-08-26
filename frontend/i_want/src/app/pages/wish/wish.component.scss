@@ -13,9 +13,9 @@
 
     .image_wrapper {
       min-width: 150px;
-      max-width: 300px;
-      padding: 12px;
-      min-height: 150px;
+      max-width: 600px;
+      width: 100%;
+      padding: 12px 24px;
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -24,6 +24,8 @@
         border-radius: 5%;
         object-fit: cover;
         user-select: none;
+        width: 100%;
+        height: 100%;
       }
       .add_image {
         padding: 12px;
@@ -104,7 +106,10 @@
           white-space: nowrap;
           overflow: hidden;
         }
+        .hiding_date_popover {
+        }
       }
+      .anonymous { padding: 12px; }
       &__content.link {
         img {
           height: 24px;
@@ -126,16 +131,28 @@
 
 .save_button_wrapper {
   height: 50px;
-  width: 150px;
+  width: 50px;
   position: absolute;
-  right: 12px;
+  right: 16px;
   bottom: 24px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   img {
     height: 100%;
-    width: 50%;
+  }
+}
+.close_button_wrapper {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: 24px;
+  left: 12px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  img {
+    height: 100%;
   }
 }
 

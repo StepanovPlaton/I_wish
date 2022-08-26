@@ -73,18 +73,21 @@
         </span>
       </ion-item>
       <ion-item class="description_item center">
-        <!-- <a color="success" [routerLink]="['/main/' + user.Login]"> -->
-        <!--   {{ "Open this user's wishes" | translate }} -->
-        <!-- </a> -->
-        <app-wish-list class="wish_list"></app-wish-list>
+        <app-wish-list
+          *ngIf="user.Login"
+          class="wish_list"
+          [login]="user.Login"
+        ></app-wish-list>
       </ion-item>
       <ion-item class="free_item"></ion-item>
     </ion-list>
   </ion-content>
 </section>
 
-<div class="save_button_wrapper">
+<div class="close_button_wrapper">
   <img [src]="CLOSE" (click)="close()" />
+</div>
+<div class="save_button_wrapper">
   <img [src]="CHECK" (click)="submit()" *ngIf="thisIsMe" />
 </div>
 <ion-button class="logout_button_wrapper" color="danger" *ngIf="thisIsMe">

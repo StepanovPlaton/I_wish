@@ -46,8 +46,11 @@ export class WishComponent implements AfterViewInit {
     Link: '',
     Owner: -1,
     Login: '',
+    Anonymous: false,
   };
   ownerInfo: IUser | null = null;
+
+  wishFormattedHidingDate: string | null = null;
 
   owner: boolean = false;
 
@@ -64,6 +67,7 @@ export class WishComponent implements AfterViewInit {
 
   @ViewChild('swipeWrapper') swipeWrapper: ElementRef | undefined;
   @ViewChild('viewImageModal') viewImageModal: IonModal | undefined;
+  @ViewChild('setHidingDateModal') setHidingDateModal: IonModal | undefined;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -88,7 +92,12 @@ export class WishComponent implements AfterViewInit {
                 Owner: +wish.Owner,
                 ID: +wish.ID,
                 Price: +(wish.Price ?? 0),
+                Anonymous: query['Anonymous'] === 'true',
               };
+              if (this.wish.HidingDate)
+                this.wishFormattedHidingDate = new Date(
+                  this.wish.HidingDate
+                ).toLocaleString();
               if (
                 this.wish.Owner === this.authService.userAuthorizationData?.id
               ) {
@@ -116,6 +125,9 @@ export class WishComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     if (this.viewImageModal)
       this.viewImageModal.cssClass = ['modal', 'view-image-modal'];
+    if (this.setHidingDateModal)
+      this.setHidingDateModal.cssClass = ['modal', 'set-hiding-date-modal'];
+
     if (this.swipeWrapper) {
       let gesture = this.gestureCtrl.create({
         gestureName: 'my-gesture',
@@ -231,5 +243,18 @@ export class WishComponent implements AfterViewInit {
         };
       }
     } else this.error = true;
+  }
+  onWishAnonymouslyChange(event: Event) {
+    this.wish.Anonymous = (event as CustomEvent).detail.checked;
+  }
+  onWishHidingDateChange(event: Event) {
+    setTimeout(() => {
+      this.setHidingDateModal?.dismiss();
+    }, 300);
+    this.wish.HidingDate = (event as CustomEvent).detail.value;
+    if (this.wish.HidingDate)
+      this.wishFormattedHidingDate = new Date(
+        this.wish.HidingDate
+      ).toLocaleString();
   }
 }

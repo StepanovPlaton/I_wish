@@ -39,8 +39,6 @@ export class ProfileComponent implements OnInit {
 
   thisIsMe: boolean = false;
 
-  wishes: IWish[] = [];
-
   private _error: boolean | undefined = undefined;
   set error(state: boolean | undefined) {
     if (state) {
@@ -64,13 +62,10 @@ export class ProfileComponent implements OnInit {
       .pipe(
         pluck('login'),
         switchMap((Login) => {
-          return combineLatest([
-            this.apiService.getUserInfo(Login),
-            this.apiService.getWishes(Login),
-          ]);
+          return this.apiService.getUserInfo(Login);
         })
       )
-      .subscribe(([user, wishes]) => {
+      .subscribe((user) => {
         this.user = {
           ...this.user,
           ...user,
@@ -78,7 +73,6 @@ export class ProfileComponent implements OnInit {
         if (this.authService.userAuthorizationData?.id === user.ID) {
           this.thisIsMe = true;
         }
-        this.wishes = wishes;
       });
   }
 

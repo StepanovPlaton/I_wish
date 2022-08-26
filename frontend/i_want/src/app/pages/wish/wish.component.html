@@ -58,12 +58,19 @@
     <ion-list class="description_list">
       <ion-item *ngIf="wish.Login && wish.Owner" class="description_item">
         <span class="description_item__name"> {{ "Owner" | translate }}: </span>
-        <span class="description_item__content" (click)="openOwner()">
+        <span
+          class="description_item__content"
+          (click)="openOwner()"
+          *ngIf="!wish.Anonymous || owner; else anonymous"
+        >
           <ion-avatar class="avatar">
             <img [src]="ownerInfo?.Avatar ?? AVATAR" />
           </ion-avatar>
           {{ wish.Login }} (#{{ wish.Owner }})
         </span>
+        <ng-template #anonymous>
+          <span class="anonymous">{{ "Anonymous" | translate }}</span>
+        </ng-template>
       </ion-item>
 
       <ion-item *ngIf="wish.Description || owner" class="description_item">
@@ -110,15 +117,55 @@
           <img (click)="openLink(wish.Link)" [src]="EXTERNAL_LINK" />
         </span>
       </ion-item>
+      <ion-item *ngIf="owner" class="description_item">
+        <span class="description_item__name">
+          {{ "Anonymously" | translate }}:
+        </span>
+        <span class="description_item__content" color="success">
+          <ion-checkbox
+            [checked]="wish.Anonymous"
+            (ionChange)="onWishAnonymouslyChange($event)"
+          ></ion-checkbox>
+        </span>
+      </ion-item>
+      <ion-item
+        *ngIf="(wish.HidingDate && wish.HidingDate !== '') || owner"
+        class="description_item"
+      >
+        <span class="description_item__name">
+          {{ "Hiding date" | translate }}:
+        </span>
+        <span class="description_item__content" color="success">
+          <ion-input
+            [value]="
+              wishFormattedHidingDate ? wishFormattedHidingDate : 'Not assigned'
+            "
+            id="date"
+          ></ion-input>
+          <ion-modal trigger="date" #setHidingDateModal>
+            <ng-template>
+              <ion-datetime
+                presentation="date-time"
+                color="primary"
+                (ionChange)="onWishHidingDateChange($event)"
+              ></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </span>
+      </ion-item>
       <ion-item class="free_item"></ion-item>
     </ion-list>
   </ion-content>
 </section>
 
-<div class="save_button_wrapper">
+<div class="close_button_wrapper">
   <img [src]="CLOSE" (click)="close()" />
+</div>
+
+<div class="save_button_wrapper">
   <img [src]="CHECK" (click)="submit()" *ngIf="owner" />
 </div>
+
 <ion-button
   class="delete_button_wrapper"
   color="danger"

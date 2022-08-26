@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+  styleUrls: ['./registration.component.scss'],
 })
 export class RegistrationComponent implements OnInit {
   @ViewChild('loginInput') loginInput: IonInput | undefined;
@@ -17,38 +17,42 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
     private readonly cdr: ChangeDetectorRef,
-    private readonly router: Router,
-  ) { }
+    private readonly router: Router
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   registration() {
-    if((this.loginInput?.value?.toString().length ?? 0) < 3 ||
-       (this.passwordInput?.value?.toString().length ?? 0) < 3) {
+    if (this.registrationFailed) return;
+    if (
+      (this.loginInput?.value?.toString().length ?? 0) < 3 ||
+      (this.passwordInput?.value?.toString().length ?? 0) < 3
+    ) {
       this.registrationFailed = true;
-      this.setNormalColorsTimeout()
-      return
+      this.setNormalColorsTimeout();
+      return;
     }
 
-    this.authService.registrationUser({
-      login: this.loginInput?.value?.toString() ?? "",
-      password: this.passwordInput?.value?.toString() ?? "",
-    }).subscribe(result => {
-      if(!result) {
-        this.registrationFailed = true;
-        this.setNormalColorsTimeout()
-        if(this.passwordInput) this.passwordInput.value = ""
-      } else {
-        this.router.navigate(["/"])
-      }
-    })
+    this.authService
+      .registrationUser({
+        login: this.loginInput?.value?.toString() ?? '',
+        password: this.passwordInput?.value?.toString() ?? '',
+      })
+      .subscribe((result) => {
+        if (!result) {
+          this.registrationFailed = true;
+          this.setNormalColorsTimeout();
+          if (this.passwordInput) this.passwordInput.value = '';
+        } else {
+          this.router.navigate(['/']);
+        }
+      });
   }
 
   setNormalColorsTimeout() {
     setTimeout(() => {
       this.registrationFailed = false;
-      this.cdr.markForCheck()
-    }, 1000)
+      this.cdr.markForCheck();
+    }, 3000);
   }
 }
