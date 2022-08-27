@@ -1,1 +1,1 @@
-export const MAX_IMAGE_SIZE = 50; //kb
+export const MAX_IMAGE_SIZE = 1024 * 25; //kb

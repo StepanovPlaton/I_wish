@@ -82,7 +82,12 @@ export class WishComponent implements AfterViewInit {
       .pipe(
         switchMap(([query, params]) => {
           if (params['id'] === 'create') {
-            return of(null);
+            this.owner = true;
+            if (this.authService.userAuthorizationData)
+              return this.apiService.getUserInfo(
+                this.authService.userAuthorizationData?.login
+              );
+            else return of(null);
           } else {
             const wish = query as IWish;
             if (wish) {
@@ -117,8 +122,8 @@ export class WishComponent implements AfterViewInit {
           }
         })
       )
-      .subscribe((owner) => {
-        this.ownerInfo = owner;
+      .subscribe((ownerInfo) => {
+        if (ownerInfo) this.ownerInfo = ownerInfo;
       });
   }
 
