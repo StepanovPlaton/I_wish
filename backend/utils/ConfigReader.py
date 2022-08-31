@@ -21,21 +21,19 @@ class ConfigClass():
         if (self.Config["ParserRootPath"] / '.env').exists():
             load_dotenv(self.Config["ParserRootPath"] / '.env')
 
-        
-
         if(not "Database" in self.Config.keys()):
             EnvironmentDatabaseVariables = [
-                "IWISH_SERVER_HOST", 
-                "IWISH_SERVER_PORT", 
-                "IWISH_SERVER_USER", 
-                "IWISH_SERVER_PASSWORD", 
+                "IWISH_SERVER_HOST",
+                "IWISH_SERVER_PORT",
+                "IWISH_SERVER_USER",
+                "IWISH_SERVER_PASSWORD",
                 "IWISH_SERVER_DATABASE"
             ]
             if(
                 reduce(
                     lambda AllFound, Current:
-                        AllFound if Current in os.environ.keys() else False, 
-                    EnvironmentDatabaseVariables, 
+                        AllFound if Current in os.environ.keys() else False,
+                    EnvironmentDatabaseVariables,
                     True
                 )
             ):
@@ -45,7 +43,7 @@ class ConfigClass():
                 self.Config["Database"]["user"] = os.environ.get("IWISH_SERVER_USER")
                 self.Config["Database"]["password"] = os.environ.get("IWISH_SERVER_PASSWORD")
                 self.Config["Database"]["database"] = os.environ.get("IWISH_SERVER_DATABASE")
-            else: 
+            else:
                 raise ConfigError(".env file not full")
 
         if(not quiet): print("Config attach")

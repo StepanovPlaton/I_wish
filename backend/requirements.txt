@@ -5,3 +5,4 @@ pydantic==1.9.0
 python-dotenv==0.20.0
 PyYAML==6.0
 uvicorn==0.17.6
+asyncpg
